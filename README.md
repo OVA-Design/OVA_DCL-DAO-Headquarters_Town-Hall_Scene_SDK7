@@ -1,5 +1,5 @@
 # Decentraland DAO in-would Town Hall Headquarters - by OVA.Design
-You can visit this scene at our decentraland world server here:
+You can visit this scene hosted at our decentraland world server here:
     https://play.decentraland.org/world/ova
 
 Our team spent total of 1 week to work on this project from concept to deployment. It is our very first time to build a scene on decentraland with SDK so the codes in this repo can be improved. 
