@@ -20,42 +20,31 @@ import { movePlayerTo } from '~system/RestrictedActions'
 // export all the functions required to make the scene work
 // export * from '@dcl/sdk'
 
+  ////have not fix issues with calling entities added via the inspector from the main() function////
 // export function main() {
-  /// import glb models into scene
+  //// Import glb models into scene
+  //#region Import
 
-  /// landscape
+  // landscape
   const landscapeEntity = engine.addEntity()
-  GltfContainer.create(landscapeEntity, {
-    src: 'models/Landscape.glb'
-  })
-  Transform.create(landscapeEntity, {
-    position: { x: 24, y: 0, z: 24 }
-  })
+  GltfContainer.create(landscapeEntity, { src: 'models/Landscape.glb' })
+  Transform.create(landscapeEntity, { position: { x: 24, y: 0, z: 24 } })
 
-  /// building
+  // building
   const buildingEntity = engine.addEntity()
-  GltfContainer.create(buildingEntity, {
-    src: 'models/Pyramid.glb'
-  })
-  Transform.create(buildingEntity, {
-    position: { x: 24, y: 0, z: 24 }
-  })
+  GltfContainer.create(buildingEntity, { src: 'models/Pyramid.glb' })
+  Transform.create(buildingEntity, { position: { x: 24, y: 0, z: 24 } })
 
-  /// moon
-  const moonEntity = engine.addEntity()
-  GltfContainer.create(moonEntity, {
-    src: 'models/Moon.glb'
-  })
-  Transform.create(moonEntity, {
-    position: { x: 24, y: 0, z: 24 }
-  })
-
-  ///eth
+  // eth
   const ethEntity = createGLTF({ position: { x: 24, y: 0, z: 24 } }, 'models/eth.glb')
 
+  // moon
+  const moonEntity = engine.addEntity()
+  GltfContainer.create(moonEntity, { src: 'models/Moon.glb' })
+  Transform.create(moonEntity, { position: { x: 24, y: 0, z: 24 } })
   utils.perpetualMotions.startRotation(moonEntity, Quaternion.fromEulerDegrees(0, 5, 0))
 
-  //// moving only horizontal
+  // Moving only horizontal
   // startPath(moonEntity, [Vector3.create(24, 0, 24), Vector3.create(24, 0, 32), Vector3.create(24, 0, 24)], 15, false, true)
   // function startPath(entity: Entity, path: Vector3[], duration: number, facePath?: boolean, loop?: boolean) {
   //   utils.paths.startStraightPath(entity, path, duration, false, function () {
@@ -70,13 +59,15 @@ import { movePlayerTo } from '~system/RestrictedActions'
   //   utils.getWorldRotation(moonEntity)
   // )
   // console.log(`${worldRot.x} ${worldRot.y} ${worldRot.z}`)
-
   Quaternion.toEulerAngles(utils.getWorldRotation(moonEntity)).y
+  //#endregion
 
-  // container to hold Teleport
+  //// Teleport players to the moving moon
+  //#region teleport
+  // container portal to hold Teleport
   const Teleport = engine.defineComponent('teleport-id', {})
 
-  // teleport box
+  // Teleport box
   const transportBox = engine.addEntity()
   Teleport.create(transportBox)
   MeshRenderer.setSphere(transportBox)
@@ -89,7 +80,6 @@ import { movePlayerTo } from '~system/RestrictedActions'
       y: Math.abs(playerPos.y - boxPos.y),
       z: Math.abs(playerPos.z - boxPos.z)
     }
-
     // Check if the difference is less than or equal to the given number in all dimensions
     return diff.x <= hitRange && diff.y <= hitRange && diff.z <= hitRange
   }
@@ -105,22 +95,22 @@ import { movePlayerTo } from '~system/RestrictedActions'
       const canTeleport = isPlayerNearBox(playerPosition, boxPosition, 1)
       if (canTeleport) {
         const mutablePlayerEntity = Transform.getMutable(engine.PlayerEntity)
-        // mutablePlayerEntity.position = worldRot //teleported position
-        // mutablePlayerEntity.position = Vector3.create(32.5, 50, 18.5)
-        // mutablePlayerEntity.position = Vector3.create(
-        movePlayerTo({ newRelativePosition: Vector3.create(
-          24 + 10 * Math.cos(Quaternion.toEulerAngles(utils.getWorldRotation(moonEntity)).y * (Math.PI / 180) * -1),
-          50,
-          24 + 10 * Math.sin(Quaternion.toEulerAngles(utils.getWorldRotation(moonEntity)).y * (Math.PI / 180) * -1)
-        )
-      })
+        movePlayerTo({
+          newRelativePosition: Vector3.create(
+            24 + 10 * Math.cos(Quaternion.toEulerAngles(utils.getWorldRotation(moonEntity)).y * (Math.PI / 180) * -1),
+            50,
+            24 + 10 * Math.sin(Quaternion.toEulerAngles(utils.getWorldRotation(moonEntity)).y * (Math.PI / 180) * -1)
+          )
+        })
       }
     }
   }
 
   engine.addSystem(transportSystem)
+  //#endregion
 
-  ///Play videos
+  ///// Play videos
+  //#region playMedia
   // screen GLB
   const screenBody = createGLTF({ position: { x: 24, y: 0, z: 24 } }, 'models/screen.glb')
   // Screen
@@ -142,9 +132,9 @@ import { movePlayerTo } from '~system/RestrictedActions'
 
   VideoPlayer.create(screen, {
     src: 'textures/video.mp4',
-    playing: true,
-    loop: true,
-    volume: 0.3
+    playing: false,
+    loop: false,
+    volume: 0.1
   })
 
   const videoTexture = Material.Texture.Video({ videoPlayerEntity: screen })
@@ -157,31 +147,14 @@ import { movePlayerTo } from '~system/RestrictedActions'
     roughness: 1.0
   })
 
-  // pointerEventsSystem.onPointerDown(
-  //   screen,
-  //   () => {
-  //     const videoPlayer = VideoPlayer.getMutable(screen)
-  //     videoPlayer.playing = !videoPlayer.playing
-  //   },
-  //   { button: InputAction.IA_POINTER, hoverText: 'Play/pause' }
-  // )
+  pointerEventsSystem.onPointerDown(
+    screen,
+    () => {
+      const videoPlayer = VideoPlayer.getMutable(screen)
+      videoPlayer.playing = !videoPlayer.playing
+    },
+    { button: InputAction.IA_POINTER, hoverText: 'Play/pause' }
+  )
 
-  // // #1
-  // const screen = engine.addEntity()
-  // MeshRenderer.setPlane(screen)
-  // Transform.create(screen, { position: { x: 24, y: 1, z: 24 } })
-  // // #2
-  // VideoPlayer.create(screen, {
-  // src: "videos\cc_video.mp4",
-  // playing: true
-  // })
-  // // #3
-  // const videoTexture = Material.Texture.Video({ videoPlayerEntity: screen })
-  // // #4
-  // Material.setPbrMaterial(screen, {
-  // texture: videoTexture,
-  // roughness: 1.0,
-  // specularIntensity: 0,
-  // metallic: 0,
-  // })
+  //#endregion
 // }
