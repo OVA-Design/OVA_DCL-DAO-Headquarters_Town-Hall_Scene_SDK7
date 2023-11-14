@@ -29,13 +29,9 @@
   },
   "dependencies": {
     "@dcl-sdk/utils": "^1.1.3",
-    "@dcl/ecs-scene-utils": "^1.7.5",
-    "@dcl/sdk-commands": "^7.3.25",
-    "init": "^0.1.2",
-    "show-manager": "^1.0.7"
+    "@dcl/asset-packs": "^1.2.8"
   },
   "bundleDependencies": [
-    "@dcl-sdk/utils",
-    "@dcl/ecs-scene-utils"
+    "@dcl-sdk/utils"
   ]
 }

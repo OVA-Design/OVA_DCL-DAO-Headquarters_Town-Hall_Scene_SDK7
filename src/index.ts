@@ -13,11 +13,10 @@ import {
   VideoPlayer
 } from '@dcl/sdk/ecs'
 import * as utils from '@dcl-sdk/utils'
-import { Vector3, Quaternion, Color3 } from '@dcl/sdk/math'
+import { Quaternion } from '@dcl/sdk/math'
 import { createGLTF, screen } from './factory'
 import { fetchStreamsSystem, transportSystem } from './systems'
 import { createPortal } from './portals'
-import { TeleportComponent } from './components'
 import { setupUi } from './ui'
 // export * from '@dcl/sdk'
 
