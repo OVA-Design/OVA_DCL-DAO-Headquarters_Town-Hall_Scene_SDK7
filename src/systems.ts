@@ -2,12 +2,10 @@
 import { getActiveVideoStreams } from '~system/CommsApi'
 import { updateTracks } from './ui'
 import { TeleportComponent } from "./components"
-
-import { MeshRenderer, Transform, engine } from '@dcl/sdk/ecs'
+import { Transform, engine } from '@dcl/sdk/ecs'
 import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import { movePlayerTo } from '~system/RestrictedActions'
 import * as utils from '@dcl-sdk/utils'
-import { createPortal } from './portals'
 import { moonEntity } from '.'
 
 
@@ -22,7 +20,6 @@ export function fetchStreamsSystem(dt: number) {
     refreshInterval = 5
   }
 }
-
 
 
 // Define the Teleport System

@@ -12,8 +12,10 @@ This project was awarded as 1st place for the contest!!! See winner announcement
 
 This scene is built with the SDK7 in alpha state with these game features:
     basic object translations
+
     teleport system with translation to moving target
-    video playback
+    
+    screen for streaming in world server
     
 To learn more about the design of this project, please visit:
     https://www.ova.design/latest-works/lunar-summit

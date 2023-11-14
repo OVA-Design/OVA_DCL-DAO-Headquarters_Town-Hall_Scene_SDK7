@@ -2,7 +2,7 @@ import { VideoTracksActiveStreamsData } from '~system/CommsApi'
 import ReactEcs, { ReactEcsRenderer, UiEntity, Label, Dropdown } from '@dcl/sdk/react-ecs'
 import { Color4 } from '@dcl/sdk/math'
 import { VideoPlayer, engine } from '@dcl/sdk/ecs'
-import { ScreenComponent } from './factory'
+import { ScreenComponent } from './components'
 import { VideoTrackSourceType, formatAddress, getSourceType } from './utils'
 
 let streams: VideoTracksActiveStreamsData[] = []

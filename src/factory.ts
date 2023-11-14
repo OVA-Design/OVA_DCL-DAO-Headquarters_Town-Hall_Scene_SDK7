@@ -13,8 +13,9 @@ import {
   InputAction
 } from '@dcl/sdk/ecs'
 import { Color3, Quaternion } from '@dcl/sdk/math'
+import { ScreenComponent } from './components'
 
-// Cube factory
+// import glft factory
 export function createGLTF(transform: Partial<TransformType>, src: string): Entity {
   const meshEntity = engine.addEntity()
   Transform.create(meshEntity, transform)
@@ -25,11 +26,9 @@ export function createGLTF(transform: Partial<TransformType>, src: string): Enti
   return meshEntity
 }
 
-///// Play videos
-//#region playMedia
 
-// Use this component to fetch the screen entity
-export const ScreenComponent = engine.defineComponent('screen-component', {})
+// Setup streaming screen
+//#region
 
 export function screen(transform: Partial<TransformType>) {
   const screenBody = createGLTF(transform, 'models/screen.glb')
@@ -42,7 +41,9 @@ export function screen(transform: Partial<TransformType>) {
     scale: { x: 1, y: 0.5625, z: 1 }
   })
 
+  // Screen video
   const screen = engine.addEntity()
+  ScreenComponent.create(screen)
   MeshRenderer.setPlane(screen)
   MeshCollider.setPlane(screen, ColliderLayer.CL_POINTER | ColliderLayer.CL_PHYSICS)
   Transform.create(screen, {
@@ -51,30 +52,33 @@ export function screen(transform: Partial<TransformType>) {
     rotation: Quaternion.fromEulerDegrees(0, 45, 0)
   })
 
-  VideoPlayer.create(screen, {
-    src: 'textures/video.mp4',
-    playing: false,
-    loop: false,
-    volume: 0.1
-  })
-
+  //// Play videos Media
+  // VideoPlayer.create(screen, {
+  //   src: 'textures/video.mp4',
+  //   playing: false,
+  //   loop: false,
+  //   volume: 0.1
+  // })
+  
   const videoTexture = Material.Texture.Video({ videoPlayerEntity: screen })
 
   Material.setPbrMaterial(screen, {
     texture: videoTexture,
     emissiveTexture: videoTexture,
     emissiveIntensity: 2,
-    emissiveColor: Color3.White(),
+    emissiveColor: Color3.Blue(),
     roughness: 1.0
   })
 
-  pointerEventsSystem.onPointerDown(
-    screen,
-    () => {
-      const videoPlayer = VideoPlayer.getMutable(screen)
-      videoPlayer.playing = !videoPlayer.playing
-    },
-    { button: InputAction.IA_POINTER, hoverText: 'Play/pause' }
-  )
+  // pointerEventsSystem.onPointerDown(
+  //   screen,
+  //   () => {
+  //     const videoPlayer = VideoPlayer.getMutable(screen)
+  //     videoPlayer.playing = !videoPlayer.playing
+  //   },
+  //   { button: InputAction.IA_POINTER, hoverText: 'Play/pause' }
+  // )
+
+  
 }
 //#endregion

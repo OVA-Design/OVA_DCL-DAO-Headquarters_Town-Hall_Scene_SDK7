@@ -57,6 +57,5 @@ utils.perpetualMotions.startRotation(moonEntity, Quaternion.fromEulerDegrees(0, 
 // add portal teleport transport system
 engine.addSystem(transportSystem)
 
-
-
-// engine.addSystem(fetchStreamsSystem)
+// add streaming system
+engine.addSystem(fetchStreamsSystem)
