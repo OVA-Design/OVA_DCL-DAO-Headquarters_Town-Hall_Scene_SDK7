@@ -1,25 +1,10 @@
-import {
-  ColliderLayer,
-  engine,
-  Entity,
-  MeshRenderer,
-  MeshCollider,
-  Transform,
-  GltfContainer,
-  PBMaterial,
-  Material,
-  InputAction,
-  pointerEventsSystem,
-  VideoPlayer
-} from '@dcl/sdk/ecs'
+import { engine, Transform, GltfContainer } from '@dcl/sdk/ecs'
 import * as utils from '@dcl-sdk/utils'
 import { Quaternion } from '@dcl/sdk/math'
 import { createGLTF, screen } from './factory'
 import { fetchStreamsSystem, transportSystem } from './systems'
 import { createPortal } from './portals'
 import { setupUi } from './ui'
-// export * from '@dcl/sdk'
-
 
 export function main() {
   //// Import glb models into scene
@@ -44,8 +29,10 @@ export function main() {
   screen({ position: { x: 24, y: 0, z: 24 } })
 
   setupUi()
-  
 }
+
+// add streaming system
+engine.addSystem(fetchStreamsSystem)
 
 // import moon glb model and export for system
 export const moonEntity = engine.addEntity()
@@ -56,5 +43,4 @@ utils.perpetualMotions.startRotation(moonEntity, Quaternion.fromEulerDegrees(0, 
 // add portal teleport transport system
 engine.addSystem(transportSystem)
 
-// add streaming system
-engine.addSystem(fetchStreamsSystem)
+

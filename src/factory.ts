@@ -7,10 +7,7 @@ import {
   GltfContainer,
   TransformType,
   ColliderLayer,
-  Material,
-  VideoPlayer,
-  pointerEventsSystem,
-  InputAction
+  Material
 } from '@dcl/sdk/ecs'
 import { Color3, Quaternion } from '@dcl/sdk/math'
 import { ScreenComponent } from './components'
@@ -26,10 +23,8 @@ export function createGLTF(transform: Partial<TransformType>, src: string): Enti
   return meshEntity
 }
 
-
 // Setup streaming screen
 //#region
-
 export function screen(transform: Partial<TransformType>) {
   const screenBody = createGLTF(transform, 'models/screen.glb')
 
@@ -59,14 +54,14 @@ export function screen(transform: Partial<TransformType>) {
   //   loop: false,
   //   volume: 0.1
   // })
-  
+
   const videoTexture = Material.Texture.Video({ videoPlayerEntity: screen })
 
   Material.setPbrMaterial(screen, {
     texture: videoTexture,
     emissiveTexture: videoTexture,
-    emissiveIntensity: 2,
-    emissiveColor: Color3.Blue(),
+    emissiveIntensity: 0.6,
+    emissiveColor: Color3.White(),
     roughness: 1.0
   })
 
@@ -78,7 +73,5 @@ export function screen(transform: Partial<TransformType>) {
   //   },
   //   { button: InputAction.IA_POINTER, hoverText: 'Play/pause' }
   // )
-
-  
 }
 //#endregion
